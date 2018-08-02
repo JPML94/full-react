@@ -25,6 +25,19 @@ app.get('/', (req, res) => {
     res.send('go to /products to see products')
 });
 
+app.get('/products/add', (req, res) => {
+    const { name, description, price } = req.query;
+    const INSERT_PRODUCTS_QUERY =  `INSERT INTO products(name, description, price) VALUES('${name}', '${description}', ${price})`
+    connection.query(INSERT_PRODUCTS_QUERY, (err, results) => {
+        if(err) {
+            return res.send(err);
+        }
+        else {
+            return res.send('succesfully added product');
+        }
+    });
+});
+
 app.get('/products', (req, res) => {
     connection.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
         if(err) {
@@ -37,7 +50,6 @@ app.get('/products', (req, res) => {
         }
         
     });
-    console.log(connection);
 });
 
 app.listen(4000, () => {
